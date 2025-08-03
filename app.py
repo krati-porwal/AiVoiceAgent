@@ -1,49 +1,60 @@
-# from flask import Flask, render_template
-
-# app = Flask(__name__)
-
-# @app.route("/")
-# def home():
-#     return render_template("index.html")
-
-# if __name__ == "__main__":
-#     app.run(debug=True) 
-
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import requests
 import os
 from dotenv import load_dotenv
+from pathlib import Path
 
-# Load .env file to get API key
-load_dotenv()
+# Load .env file
+load_dotenv(dotenv_path=Path(".") / ".env")
 MURF_API_KEY = os.getenv("MURF_API_KEY")
+print("Loaded API Key:", MURF_API_KEY)
 
-# Create FastAPI app
 app = FastAPI()
 
-# Input format
 class TextInput(BaseModel):
     text: str
+    voice_id: str
 
-# backend route 
-@app.post("/generate")
+@app.post("/generate-audio")
 def generate(data: TextInput):
     url = "https://api.murf.ai/v1/speech/generate"
 
     headers = {
-        "Authorization": f"Bearer {MURF_API_KEY}",
+        "api-key": MURF_API_KEY,
+        "accept": "application/json",
         "Content-Type": "application/json"
     }
 
     payload = {
         "text": data.text,
-        "voice": "en-IN-Neerja"
+        "voice_id": data.voice_id
     }
 
     try:
         response = requests.post(url, headers=headers, json=payload)
         response.raise_for_status()
         return response.json()
-    except requests.exceptions.RequestException as e:
+    except requests.exceptions.HTTPError as e:
+        return {
+            "error": str(e),
+            "status_code": response.status_code,
+            "message": response.text
+        }
+    except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/voices")
+def get_voices():
+    url = "https://api.murf.ai/v1/speech/voices"
+    headers = {
+        "api-key": MURF_API_KEY,
+        "accept": "application/json"
+    }
+
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        return {"error": str(e), "message": response.text}
