@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel #basemodel help in validation
 import requests
 import os
 from dotenv import load_dotenv
@@ -8,7 +8,6 @@ from pathlib import Path
 # Load .env file
 load_dotenv(dotenv_path=Path(".") / ".env")
 MURF_API_KEY = os.getenv("MURF_API_KEY")
-print("Loaded API Key:", MURF_API_KEY)
 
 app = FastAPI()
 
@@ -16,8 +15,9 @@ class TextInput(BaseModel):
     text: str
     voice_id: str
 
-@app.post("/generate-audio")
-def generate(data: TextInput):
+
+@app.post("/generate-audio")  #decorators
+def generate(data: TextInput):  #method define
     url = "https://api.murf.ai/v1/speech/generate"
 
     headers = {

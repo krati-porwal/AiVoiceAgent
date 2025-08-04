@@ -5,9 +5,20 @@
     <title>Voice Agent Day 1</title>
 </head>
 <body>
-    <h1>Hello, Voice Agent!</h1>
-    <p>This is Day 1 of 30 Days of Voice Agents.</p>
-
+    <h2>Text to Speech with Murf AI</h2>
+    <!-- Text input field -->
+  <input type="text" id="textInput" placeholder="Enter your text here" />
+    <!-- Dropdown for voice selection -->
+  <select id="voiceSelect">
+    <option value="en-US-cooper">Cooper (en-US)</option>
+    <option value="en-UK-hazel">Hazel (en-UK)</option>
+    <option value="bn-IN-arnab">Arnab (bn-IN)</option>
+  </select>
+  <!-- Submit button -->
+  <button onclick="generateAudio()">Generate Voice</button>
+  
+  <!-- Audio player -->
+  <audio id="audioPlayer" controls></audio>
     <script src="/static/script.js"></script>
 </body>
 </html>
