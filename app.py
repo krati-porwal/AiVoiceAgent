@@ -1,4 +1,7 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException,Request
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel #basemodel help in validation
 import requests
 import os
@@ -10,6 +13,18 @@ load_dotenv(dotenv_path=Path(".") / ".env")
 MURF_API_KEY = os.getenv("MURF_API_KEY")
 
 app = FastAPI()
+
+# 👉 Mount the /static route to serve JS/CSS etc.
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# 👉 Tell FastAPI where to find your HTML templates
+templates = Jinja2Templates(directory="templates")
+
+# 🏠 Serve index.html at root path
+@app.get("/", response_class=HTMLResponse)
+def read_root(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
 
 class TextInput(BaseModel):
     text: str

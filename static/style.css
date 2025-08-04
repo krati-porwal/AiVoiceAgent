@@ -1,0 +1,45 @@
+body {
+  background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+  color: #fff;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.gradient-heading {
+  background: linear-gradient(to right, #00ffe7, #0fffc3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.custom-card {
+  background-color: #121212;
+  border: 1px solid #2c2c2c;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 0 20px rgba(0, 255, 200, 0.15);
+}
+
+.form-control,
+.form-select {
+  background-color: #1e1e1e;
+  color: #fff;
+  border: 1px solid #333;
+}
+
+.btn-generate {
+  background: linear-gradient(135deg, #00ffc3, #00c2ff);
+  border: none;
+  color: #000;
+  font-weight: bold;
+  transition: 0.3s ease-in-out;
+}
+.btn-generate:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #00ffc3;
+}
+
+audio {
+  width: 100%;
+  margin-top: 20px;
+}
+
+/*# sourceMappingURL=style.css.map */
