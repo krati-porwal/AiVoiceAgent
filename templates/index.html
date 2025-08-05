@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/static/style.css" />
   </head>
   <body>
-    <div class="row justify-content-center my-5">
+    <div class="row justify-content-center my-5 py-5">
       <div class="col-10 col-sm-8 col-md-6">
         <div class="text-center mb-4">
           <h1 class="gradient-heading fw-bold">🎧 Murf Voice Agent</h1>
@@ -48,8 +48,22 @@
           <audio id="audioPlayer" controls></audio>
         </div>
       </div>
+     
+        <!-- Echo Bot -->
+         <div class="row mx-0 py-5 justify-content-center my-5">
+            <div class="col-10 col-sm-8 col-md-6 custom-card">
+               <div class="text-center mb-4">
+        <h4 class="text-info fw-bold mb-3 justify-content-center">Echo Bot</h4>
+        <div class="d-flex justify-content-center gap-2 mb-3">
+          <button onclick="startRecording()" class="btn btn-outline-light" >🎙️ Start Recording</button>
+          <button onclick="stopRecording()" class="btn btn-outline-danger">🛑 Stop Recording</button>
+        </div>
+        <audio id="echoPlayer" controls class="w-100"></audio>
+        </div>
+        </div>
+        </div> 
+      </div>
     </div>
-
     <script src="/static/script.js"></script>
   </body>
-</html>
+</html> 

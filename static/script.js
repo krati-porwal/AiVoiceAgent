@@ -27,7 +27,7 @@ async function generateAudio() {
 
       // Wait for the audio to be ready before playing
       audioPlayer.oncanplaythrough = () => {
-        audioPlayer.play().catch(error => {
+        audioPlayer.play().catch((error) => {
           console.error("Autoplay error:", error);
           alert("Audio is ready. Click Play to listen.");
         });
@@ -38,5 +38,44 @@ async function generateAudio() {
   } catch (error) {
     console.error("Error:", error);
     alert("Something went wrong.");
+  }
+}
+ //echobot 
+let mediaRecorder;
+let recordedChunks = [];
+
+function startRecording() {
+  recordedChunks = [];
+  navigator.mediaDevices
+    .getUserMedia({ audio: true })
+    .then((stream) => {
+      mediaRecorder = new MediaRecorder(stream);
+
+      mediaRecorder.ondataavailable = function (e) {
+        if (e.data.size > 0) {
+          recordedChunks.push(e.data);
+        }
+      };
+
+      mediaRecorder.onstop = function () {
+        const blob = new Blob(recordedChunks, { type: "audio/webm" });
+        const audioURL = URL.createObjectURL(blob);
+        const audio = document.getElementById("echoAudio");
+        audio.src = audioURL;
+        audio.play();
+      };
+
+      mediaRecorder.start();
+      console.log("Recording started");
+    })
+    .catch((err) => {
+      alert("Microphone access denied: " + err.message);
+    });
+}
+
+function stopRecording() {
+  if (mediaRecorder && mediaRecorder.state !== "inactive") {
+    mediaRecorder.stop();
+    console.log("Recording stopped");
   }
 }
