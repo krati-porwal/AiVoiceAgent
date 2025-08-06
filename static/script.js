@@ -40,7 +40,7 @@ async function generateAudio() {
     alert("Something went wrong.");
   }
 }
- //echobot 
+//echobot
 let mediaRecorder;
 let recordedChunks = [];
 
@@ -63,6 +63,25 @@ function startRecording() {
         const audio = document.getElementById("echoAudio");
         audio.src = audioURL;
         audio.play();
+        // Upload to server
+        const formData = new FormData();
+        formData.append("file", blob, "echo-audio.webm");
+
+        const status = document.getElementById("uploadStatus");
+        status.innerText = "Uploading...";
+
+        fetch("/upload-audio", {
+          method: "POST",
+          body: formData,
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            status.innerText = `✅ Uploaded: ${data.filename} (${data.size} bytes)`;
+          })
+          .catch((err) => {
+            console.error("Upload failed", err);
+            status.innerText = "❌ Upload failed.";
+          });
       };
 
       mediaRecorder.start();

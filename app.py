@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException,Request
+from fastapi import UploadFile, File
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -7,6 +8,8 @@ import requests
 import os
 from dotenv import load_dotenv
 from pathlib import Path
+import shutil
+import uuid 
 
 # Load .env file
 load_dotenv(dotenv_path=Path(".") / ".env")
@@ -73,3 +76,23 @@ def get_voices():
         return response.json()
     except requests.exceptions.RequestException as e:
         return {"error": str(e), "message": response.text}
+
+@app.post("/upload-audio")
+async def upload_audio(file: UploadFile = File(...)):
+    os.makedirs("uploads", exist_ok=True)  # ✅ Create uploads directory if it doesn't exist
+
+    # ✅ Generate a unique filename using uuid4
+    unique_filename = f"{uuid.uuid4()}_{file.filename}"
+    file_location = f"uploads/{unique_filename}"
+  
+    with open(file_location, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    # Get size
+    size = os.path.getsize(file_location)
+
+    return {
+        "filename": file.filename,
+        "content_type": file.content_type,
+        "size_in_bytes": size
+    }
