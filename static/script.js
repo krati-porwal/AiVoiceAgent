@@ -76,7 +76,7 @@ function startRecording() {
         })
           .then((res) => res.json())
           .then((data) => {
-            status.innerText = `✅ Uploaded: ${data.filename} (${data.size} bytes)`;
+            status.innerText = `✅ Uploaded: ${data.filename} (${data.size_in_bytes} bytes)`;
           })
           .catch((err) => {
             console.error("Upload failed", err);
