@@ -77,6 +77,7 @@ function startRecording() {
           .then((res) => res.json())
           .then((data) => {
             status.innerText = `✅ Uploaded: ${data.filename} (${data.size_in_bytes} bytes)`;
+            transcribeAudio(blob);
           })
           .catch((err) => {
             console.error("Upload failed", err);
@@ -97,4 +98,18 @@ function stopRecording() {
     mediaRecorder.stop();
     console.log("Recording stopped");
   }
+}
+
+async function transcribeAudio(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await fetch("http://localhost:8000/transcribe/file", {
+        method: "POST",
+        body: formData,
+    });
+
+    const data = await response.json();
+
+    document.getElementById("transcriptText").innerText = data.transcript || data.error;
 }

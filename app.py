@@ -3,6 +3,7 @@ from fastapi import UploadFile, File
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi.middleware.cors import CORSMiddleware  #Added CORS
 from pydantic import BaseModel #basemodel help in validation
 import requests
 import os
@@ -10,6 +11,7 @@ from dotenv import load_dotenv
 from pathlib import Path
 import shutil
 import uuid 
+import assemblyai as aai
 
 # Load .env file
 load_dotenv(dotenv_path=Path(".") / ".env")
@@ -17,11 +19,22 @@ MURF_API_KEY = os.getenv("MURF_API_KEY")
 
 app = FastAPI()
 
+# CORS Middleware (IMPORTANT for fetch to work across ports)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Change to specific origin in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # 👉 Mount the /static route to serve JS/CSS etc.
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # 👉 Tell FastAPI where to find your HTML templates
 templates = Jinja2Templates(directory="templates")
+
+aai.settings.api_key ="7a25540c2e374e109ccd261ce80a68a9"
 
 # 🏠 Serve index.html at root path
 @app.get("/", response_class=HTMLResponse)
@@ -96,3 +109,16 @@ async def upload_audio(file: UploadFile = File(...)):
         "content_type": file.content_type,
         "size_in_bytes": size
     }
+
+@app.post("/transcribe/file")
+async def transcribe_audio(file: UploadFile = File(...)):
+    try:
+        audio_bytes = await file.read()
+
+        transcriber = aai.Transcriber()
+        transcript = transcriber.transcribe(audio_bytes)
+
+        return {"transcript": transcript.text}
+
+    except Exception as e:
+        return {"error": str(e)}
