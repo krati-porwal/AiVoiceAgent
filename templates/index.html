@@ -56,13 +56,20 @@
             <button onclick="stopRecording()" class="btn btn-outline-danger px-4">
               🛑 Stop
             </button>
+            <button onclick="echoWithVoice();" class="btn btn-outline-success px-4">
+                🔁 Echo with Murf Voice
+            </button>
           </div>
 
           <div class="mb-3">
-            <label for="echoAudio" class="form-label">🎧 Recorded Audio</label>
-            <audio id="echoAudio" class="form-control w-100" controls></audio>
+              <label for="myAudio" class="form-label">🎧 Your Recorded Audio</label>
+              <audio id="myAudio" class="form-control w-100" controls></audio>
           </div>
 
+          <div class="mb-3">
+            <label for="murfAudio" class="form-label">🎧 Murf Voice Output</label>
+            <audio id="murfAudio" class="form-control w-100" controls></audio>
+          </div>
           <div class="mb-3">
             <label class="form-label">📤 Upload Status</label>
             <div id="uploadStatus" class="bg-secondary text-light p-2 rounded small">Waiting for recording...</div>
@@ -74,6 +81,7 @@
               <em>Transcript will appear here after processing...</em>
             </div>
           </div>
+  
         </div>
       </div>
     </div>

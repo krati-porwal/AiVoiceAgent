@@ -60,7 +60,7 @@ function startRecording() {
       mediaRecorder.onstop = function () {
         const blob = new Blob(recordedChunks, { type: "audio/webm" });
         const audioURL = URL.createObjectURL(blob);
-        const audio = document.getElementById("echoAudio");
+        const audio = document.getElementById("myAudio");
         audio.src = audioURL;
         audio.play();
         // Upload to server
@@ -112,4 +112,50 @@ async function transcribeAudio(file) {
     const data = await response.json();
 
     document.getElementById("transcriptText").innerText = data.transcript || data.error;
+}
+
+
+async function echoWithVoice() {
+  // 1. Grab recorded audio blob
+  const blob = new Blob(recordedChunks, { type: "audio/webm" });
+
+  // 2. Send audio to backend for transcription + TTS
+  const formData = new FormData();
+  formData.append("file", blob, "user-voice.webm");
+
+  try {
+    const response = await fetch("/tts/echo", {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await response.json();
+
+    if (data.audio_url) {
+      // ✅ Set Murf-generated audio URL to <audio> element
+      const audioEl = document.getElementById("murfAudio");
+
+      // First pause and reset before changing src (prevents AbortError)
+      audioEl.pause();
+      audioEl.src = "";
+      audioEl.load();
+
+      // Now set the new Murf audio URL
+      audioEl.src = data.audio_url;
+
+      // Wait until audio is ready before trying to play
+      audioEl.oncanplaythrough = () => {
+        audioEl.play().catch(err => {
+          console.error("Autoplay blocked:", err);
+          alert("Murf audio ready! Press Play to listen.");
+        });
+      };
+    } else {
+      console.error("Error:", data.detail || data);
+      alert("Echo generation failed.");
+    }
+  } catch (err) {
+    console.error("Fetch error:", err);
+    alert("Something went wrong while generating Murf voice.");
+  }
 }
