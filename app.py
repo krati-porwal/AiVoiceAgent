@@ -13,6 +13,8 @@ import shutil  #Copies uploaded files to disk.
 import uuid  #Creates unique filenames
 import assemblyai as aai   # Speech-to-text transcription API.
 from murf import Murf
+import google.generativeai as genai
+
 
 # Load .env file
 load_dotenv(dotenv_path=Path(".") / ".env")
@@ -22,6 +24,8 @@ MURF_API_KEY = os.getenv("MURF_API_KEY")
 murf_client = Murf(api_key=os.getenv("MURF_API_KEY"))
 
 app = FastAPI()
+
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 # CORS Middleware (IMPORTANT for fetch to work across ports)
 app.add_middleware(
@@ -51,6 +55,8 @@ class TextInput(BaseModel):
     text: str
     voice_id: str
 
+class QueryRequest(BaseModel):
+    text: str
 
 @app.post("/generate-audio")  #decorators
 def generate(data: TextInput):  #method define
@@ -162,5 +168,16 @@ async def tts_echo(file: UploadFile = File(...)):
         # 4. Return Murf audio URL
         return {"audio_url": response.audio_file}
 
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/llm/query")
+async def llm_query(req: QueryRequest):
+    try:
+        model_name = "gemini-2.0-flash"
+        model = genai.GenerativeModel(model_name)
+        resp = model.generate_content(req.text)
+        return {"response": resp.text}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

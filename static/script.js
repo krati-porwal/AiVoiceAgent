@@ -101,19 +101,19 @@ function stopRecording() {
 }
 
 async function transcribeAudio(file) {
-    const formData = new FormData();
-    formData.append("file", file);
+  const formData = new FormData();
+  formData.append("file", file);
 
-    const response = await fetch("http://localhost:8000/transcribe/file", {
-        method: "POST",
-        body: formData,
-    });
+  const response = await fetch("http://localhost:8000/transcribe/file", {
+    method: "POST",
+    body: formData,
+  });
 
-    const data = await response.json();
+  const data = await response.json();
 
-    document.getElementById("transcriptText").innerText = data.transcript || data.error;
+  document.getElementById("transcriptText").innerText =
+    data.transcript || data.error;
 }
-
 
 async function echoWithVoice() {
   // 1. Grab recorded audio blob
@@ -126,7 +126,7 @@ async function echoWithVoice() {
   try {
     const response = await fetch("/tts/echo", {
       method: "POST",
-      body: formData
+      body: formData,
     });
 
     const data = await response.json();
@@ -145,7 +145,7 @@ async function echoWithVoice() {
 
       // Wait until audio is ready before trying to play
       audioEl.oncanplaythrough = () => {
-        audioEl.play().catch(err => {
+        audioEl.play().catch((err) => {
           console.error("Autoplay blocked:", err);
           alert("Murf audio ready! Press Play to listen.");
         });
