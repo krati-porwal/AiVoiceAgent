@@ -73,6 +73,7 @@ This project follows a **client-server architecture**:
  ```
    uvicorn main:app --reload
 
+**Screenshot**
 <img width="1366" height="728" alt="image" src="https://github.com/user-attachments/assets/bba16007-5fd8-4db2-900c-0de2bbb5040e" />
 
 
