@@ -54,14 +54,17 @@ This project follows a **client-server architecture**:
    cd voice-agent
    
 2. **Create and activate a virtual environment**
-   ```python -m virtualenv venv
+   ```
+   python -m virtualenv venv
    source venv/bin/activate   # Mac/Linux
    .\venv\Scripts\activate
    
 3. **Install dependencies**
+   ```
    pip install -r requirements.txt
    
-4. **Create a .env file in the root folder and add your API keys:**
+5. **Create a .env file in the root folder and add your API keys:**
+   ```
    MURF_API_KEY = <---your api key--->
    GEMINI_API_KEY =  <---your api key--->
    ASSEMBLYAI_API_KEY =  <---your api key--->
