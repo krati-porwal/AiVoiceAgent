@@ -45,6 +45,7 @@ This project follows a **client-server architecture**:
 - **Text-to-Speech:** Murf AI API  
 
 ---
+<img width="1366" height="728" alt="image" src="https://github.com/user-attachments/assets/bba16007-5fd8-4db2-900c-0de2bbb5040e" />
 
 ## ⚙️ Installation & Setup
 
@@ -70,11 +71,12 @@ This project follows a **client-server architecture**:
    ASSEMBLYAI_API_KEY =  <---your api key--->
 
 5.**Start the backend server**
-   ```
-   uvicorn main:app --reload
+  ```
+  uvicorn main:app --reload
 
-6.**Screenshot**
-<img width="1366" height="728" alt="image" src="https://github.com/user-attachments/assets/bba16007-5fd8-4db2-900c-0de2bbb5040e" />
+
+
+
 
 
 
