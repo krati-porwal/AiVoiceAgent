@@ -70,7 +70,7 @@ This project follows a **client-server architecture**:
    ASSEMBLYAI_API_KEY =  <---your api key--->
 
 5.**Start the backend server**
- ```
+   ```
    uvicorn main:app --reload
 
 6.**Screenshot**
