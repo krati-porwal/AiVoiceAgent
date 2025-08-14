@@ -59,6 +59,8 @@ class QueryRequest(BaseModel):
 class ChatResponse(BaseModel):
     audio_file: str
     transcript: str
+
+
     
 #------------------------------Endpoints---------------------------------------
 # Serve index.html at root path
