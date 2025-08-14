@@ -31,7 +31,7 @@ This project follows a **client-server architecture**:
 - 🤖 Intelligent AI replies powered by Google Gemini.  
 - 🔊 Natural text-to-speech output using Murf AI.  
 - 💬 Chat-style interface showing both user and AI messages.  
-- 🗂️ **Conversation history saving** — view past chat messages during the session.  
+- 🗂️ **Conversation history saving** 
 - 🎯 Simple Start/Stop recording controls.  
 
 ---
