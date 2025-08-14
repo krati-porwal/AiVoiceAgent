@@ -54,7 +54,7 @@ This project follows a **client-server architecture**:
    cd voice-agent
    
 2. **Create and activate a virtual environment**
-   python -m virtualenv venv
+   ```python -m virtualenv venv
    source venv/bin/activate   # Mac/Linux
    .\venv\Scripts\activate
    
