@@ -25,11 +25,11 @@ async function generateAudio() {
           alert("Audio is ready. Click Play to listen.");
         });
       };
-    }else if (result.transcript) {
-         alert(result.transcript); // Show fallback text
+    } else if (result.transcript) {
+      alert(result.transcript); // Show fallback text
     } else {
-       alert("Failed to generate audio.");
-  }  
+      alert("Failed to generate audio.");
+    }
   } catch (error) {
     console.error("Error generating audio:", error);
     alert("Something went wrong.");
@@ -51,7 +51,8 @@ if (!sessionId) {
 // ====== START RECORDING ======
 function startRecording() {
   recordedChunks = [];
-  navigator.mediaDevices.getUserMedia({ audio: true })
+  navigator.mediaDevices
+    .getUserMedia({ audio: true })
     .then((stream) => {
       mediaRecorder = new MediaRecorder(stream);
       mediaRecorder.ondataavailable = (e) => {
@@ -94,14 +95,13 @@ async function handleRecordingStop() {
     const botReply = await chatWithAgent(blob);
 
     // 4️⃣ Show AI reply text
-   const botMsg = document.createElement("div");
-   botMsg.className = "chat bot";
+    const botMsg = document.createElement("div");
+    botMsg.className = "chat bot";
 
     // Prefer transcript > text, but don't duplicate
-   let replyText = botReply.transcript || botReply.text || "[No reply]";
-   botMsg.innerText = replyText;
-   chatBox.appendChild(botMsg);
-
+    let replyText = botReply.transcript || botReply.text || "[No reply]";
+    botMsg.innerText = replyText;
+    chatBox.appendChild(botMsg);
 
     // 5️⃣ Play AI reply audio if exists
     if (botReply.audio_file) {
@@ -130,7 +130,8 @@ async function transcribeAudio(file) {
   });
 
   const data = await response.json();
-  document.getElementById("transcriptText").innerText = data.transcript || data.error;
+  document.getElementById("transcriptText").innerText =
+    data.transcript || data.error;
   return data;
 }
 

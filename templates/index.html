@@ -1,74 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voice Agent</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Voice Agent</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="/static/style.css" />
-</head>
+  <body>
+    <div class="container my-5 py-5">
+      <div class="row justify-content-center">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+          <!-- TTS Section -->
+          <div class="text-center mb-4">
+            <h1 class="gradient-heading fw-bold">🎧 Murf Voice Agent</h1>
+            <p class="text-light small">
+              Day 3 - Play TTS audio using FastAPI + Murf
+            </p>
+          </div>
 
-<body>
-  <div class="container my-5 py-5">
-    <div class="row justify-content-center">
-      <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+          <div class="custom-card mb-5">
+            <div class="mb-3">
+              <label for="textInput" class="form-label">Enter Text</label>
+              <input
+                type="text"
+                id="textInput"
+                class="form-control"
+                placeholder="Type your message here..."
+              />
+            </div>
 
-        <!-- TTS Section -->
-        <div class="text-center mb-4">
-          <h1 class="gradient-heading fw-bold">🎧 Murf Voice Agent</h1>
-          <p class="text-light small">Day 3 - Play TTS audio using FastAPI + Murf</p>
+            <div class="mb-3">
+              <label for="voiceSelect" class="form-label">Select Voice</label>
+              <select id="voiceSelect" class="form-select">
+                <option value="en-US-cooper">Cooper (US)</option>
+                <option value="en-UK-hazel">Hazel (UK)</option>
+                <option value="bn-IN-arnab">Arnab (IN)</option>
+              </select>
+            </div>
+
+            <div class="d-grid">
+              <button onclick="generateAudio()" class="btn btn-generate">
+                Generate Voice 🔊
+              </button>
+            </div>
+
+            <audio id="ttsAudioPlayer" controls class="mt-3 w-100"></audio>
+          </div>
+
+          <!-- Chat Section -->
+          <div
+            class="custom-card chat-container border border-success rounded-3 shadow-sm p-5"
+          >
+            <header class="chat-header mb-3 text-center">
+              <h2>🤖 AI Voice Assistant</h2>
+              <p class="small text-muted">
+                Now with memory! Speak, and I’ll remember our chat 🎤
+              </p>
+            </header>
+
+            <div id="chat-box" class="chat-box mb-3"></div>
+
+            <div class="input-area d-flex gap-2 mb-3 justify-content-center">
+              <button
+                id="startBtn"
+                class="btn btn-outline-success"
+                onclick="startRecording()"
+              >
+                🎙
+              </button>
+              <button
+                id="stopBtn"
+                class="btn btn-outline-danger"
+                onclick="stopRecording()"
+              >
+                ⏹
+              </button>
+            </div>
+
+            <audio
+              id="botAudio"
+              controls
+              class="w-100 mb-2"
+              style="display: none"
+            ></audio>
+            <audio id="myAudio" controls class="w-100 mb-2"></audio>
+            <p id="uploadStatus" class="small text-muted"></p>
+            <p id="transcriptText" class="small text-light"></p>
+          </div>
         </div>
-
-        <div class="custom-card mb-5">
-          <div class="mb-3">
-            <label for="textInput" class="form-label">Enter Text</label>
-            <input type="text" id="textInput" class="form-control" placeholder="Type your message here..." />
-          </div>
-
-          <div class="mb-3">
-            <label for="voiceSelect" class="form-label">Select Voice</label>
-            <select id="voiceSelect" class="form-select">
-              <option value="en-US-cooper">Cooper (US)</option>
-              <option value="en-UK-hazel">Hazel (UK)</option>
-              <option value="bn-IN-arnab">Arnab (IN)</option>
-            </select>
-          </div>
-
-          <div class="d-grid">
-            <button onclick="generateAudio()" class="btn btn-generate">
-              Generate Voice 🔊
-            </button>
-          </div>
-
-          <audio id="ttsAudioPlayer" controls class="mt-3 w-100"></audio>
-        </div>
-
-        <!-- Chat Section -->
-        <div class="custom-card chat-container border border-success rounded-3 shadow-sm p-5 ">
-          <header class="chat-header mb-3 text-center">
-            <h2>🤖 AI Voice Assistant</h2>
-            <p class="small text-muted">Now with memory! Speak, and I’ll remember our chat 🎤</p>
-          </header>
-
-          <div id="chat-box" class="chat-box mb-3"></div>
-
-          <div class="input-area d-flex gap-2 mb-3 justify-content-center">
-            <button id="startBtn" class="btn btn-outline-success" onclick="startRecording()">🎙</button>
-            <button id="stopBtn" class="btn btn-outline-danger" onclick="stopRecording()">⏹</button>
-          </div>
-
-          <audio id="botAudio" controls class="w-100 mb-2" style="display:none;"></audio>
-          <audio id="myAudio" controls class="w-100 mb-2"></audio>
-          <p id="uploadStatus" class="small text-muted"></p>
-          <p id="transcriptText" class="small text-light"></p>
-        </div>
-
       </div>
     </div>
-  </div>
-  <script src="/static/script.js"></script>
-</body>
+    <script src="/static/script.js"></script>
+  </body>
 </html>
