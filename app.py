@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException,Request,UploadFile, File 
+from fastapi import FastAPI, HTTPException,Request,UploadFile, File ,Form, Path
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates #Renders HTML with dynamic data
@@ -12,7 +12,6 @@ import shutil  #Copies uploaded files to disk.
 import uuid  #Creates unique filenames  
 from murf import Murf
 from fastapi.responses import JSONResponse
-from fastapi import Form, Path
 
 # --- SDK Imports ---
 import assemblyai as aai   # Speech-to-text transcription API.
@@ -60,8 +59,6 @@ class ChatResponse(BaseModel):
     audio_file: str
     transcript: str
 
-
-    
 #------------------------------Endpoints---------------------------------------
 # Serve index.html at root path
 @app.get("/", response_class=HTMLResponse)
@@ -138,7 +135,7 @@ async def upload_audio(file: UploadFile = File(...)):
         return JSONResponse(
     content={"audio_file": fb["audio_file"], "transcript": fb["transcript"]},
     status_code=503
-)
+    )
 
     # Get size
     size = os.path.getsize(file_location)
@@ -208,7 +205,6 @@ async def tts_echo(file: UploadFile = File(...)):
     content={"audio_file": fb["audio_file"], "transcript": fb["transcript"]},
     status_code=503
 )
-
 
 
 @app.post("/llm/query")
