@@ -12,6 +12,7 @@ import shutil  #Copies uploaded files to disk.
 import uuid  #Creates unique filenames  
 from murf import Murf
 from fastapi.responses import JSONResponse
+from fastapi import WebSocket
 
 # --- SDK Imports ---
 import assemblyai as aai   # Speech-to-text transcription API.
@@ -322,3 +323,23 @@ def fallback_response(voice_id="en-US-cooper"):
     except Exception:
         # If Murf also fails, just return text
         return {"audio_file": None, "transcript": fallback_text}
+
+# -------------------------
+#  WEBSOCKET ENDPOINT
+# -------------------------
+@app.websocket("/ws/audio")
+async def websocket_audio_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    os.makedirs("recordings", exist_ok=True)  # Folder to save audio
+    file_path = f"recordings/streamed_audio.wav"
+
+    with open(file_path, "wb") as f:
+        try:
+            while True:
+                audio_chunk = await websocket.receive_bytes()  # Receive binary audio
+                f.write(audio_chunk)  # Save chunk to file
+        except Exception as e:
+            print(f"[WS ERROR] {str(e)}")
+        finally:
+            await websocket.close()
+            print(f"Audio saved to {file_path}")
